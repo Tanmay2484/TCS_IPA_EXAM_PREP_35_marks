@@ -1,0 +1,132 @@
+/*
+Create class Medicine with below attributes: MedicineName - String batch - String disease - String price - int
+
+Create class Solution and implement static method "getPriceByDisease" in the Solution class. This method will take array of Medicine objects and a disease String as parameters. And will return another sorted array of Integer objects where the disease String matches with the original array of Medicine object's disease attribute (case insensitive search).
+
+Write necessary getters and setters.
+
+Before calling "getPriceByDisease" method in the main method, read values for four Medicine objects referring the attributes in above sequence along with a String disease. Then call the "getPriceByDisease" method and print the result.
+
+Input
+dolo650
+FAC124W
+fever
+100
+paracetamol
+PAC545B
+bodypain
+150
+almox
+ALM747S
+fever
+200
+aspirin
+ASP849Q
+flu
+250
+fever
+Output
+100
+200
+
+*/
+//ans
+import java.util.*;
+public class Main{
+  public static void main(String[] args){
+    Scanner sc=new Scanner(System.in);
+    Medicine[] arr=new Medicine[4];
+    for(int i=0;i<arr.length;i++){
+      String a=sc.nextLine();
+      String b=sc.nextLine();
+      String c=sc.nextLine();
+      int d=sc.nextInt();sc.nextLine();
+      arr[i]=new Medicine(a,b,c,d);
+    }
+    String diease=sc.nextLine();
+    Medicine[] res=getPriceByDisease(arr,diease);
+    if(res!=null){
+      for(int i=0;i<res.length;i++){
+        System.out.println(res[i].price);
+      }
+    }
+    else{
+      System.out.println("No Medicine Found");
+    }
+  }
+  public static Medicine[] getPriceByDisease(Medicine[] arr,String diease){
+    List<Medicine> res=new ArrayList<>();
+    for(Medicine med:arr){
+      if(med.disease.equalsIgnoreCase(diease)){
+        res.add(med);
+      }
+    }
+    res.sort(Comparator.comparingInt(med-> med.price));
+    if(res.size() <0)
+      return null;
+    return res.toArray(new Medicine[0]);
+  }
+}
+class Medicine{
+  String medicineName;
+  String batch;
+  String disease;
+  int price;
+  Medicine(String medicineName,String batch,String disease,int price){
+    this.medicineName=medicineName;
+    this.batch=batch;
+    this.disease=disease;
+    this.price=price;
+  }
+}
+//another ans
+import java.util.*;
+public class Main{
+  public static void main(String[] args){
+    Scanner sc=new Scanner(System.in);
+    Medicine[] arr=new Medicine[4];
+    for(int i=0;i<arr.length;i++){
+      String a=sc.nextLine();
+      String b=sc.nextLine();
+      String c=sc.nextLine();
+      int d=sc.nextInt();sc.nextLine();
+      arr[i]=new Medicine(a,b,c,d);
+    }
+    String diease=sc.nextLine();
+    int[] res=getPriceByDisease(arr,diease);
+    if(res!=null){
+      for(int i=0;i<res.length;i++){
+        System.out.println(res[i]);
+      }
+    }
+    else{
+      System.out.println("No Medicine Found");
+    }
+  }
+  public static int[] getPriceByDisease(Medicine[] arr,String diease){
+    int[] res=new int[0];
+    for(int i=0;i<arr.length;i++){
+      if(arr[i].disease.equalsIgnoreCase(diease)){
+        res=Arrays.copyOf(res,res.length+1);
+        res[res.length-1]=arr[i].price;
+        Arrays.sort(res);
+      }
+    }
+    if(res.length<0)
+      return null;
+
+    return res;
+  }
+}
+class Medicine{
+  String medicineName;
+  String batch;
+  String disease;
+  int price;
+  Medicine(String medicineName,String batch,String disease,int price){
+    this.medicineName=medicineName;
+    this.batch=batch;
+    this.disease=disease;
+    this.price=price;
+  }
+}
