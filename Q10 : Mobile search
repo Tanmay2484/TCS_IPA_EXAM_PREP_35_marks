@@ -1,0 +1,104 @@
+5
+101
+oneplus
+8
+35000
+102
+iphone
+8
+89000
+103
+IQOO
+12
+45000
+104
+iphone
+12
+120000
+105
+Iphone
+8
+70000
+IPHONE
+8
+///
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Mobile[] arr = new Mobile[n];
+
+        for (int i = 0; i < n; i++) {
+            int a = sc.nextInt();
+            sc.nextLine();  // Consume newline
+            String b = sc.nextLine();
+            double c = sc.nextDouble();
+            double d = sc.nextDouble();
+
+            arr[i] = new Mobile(a, b, c, d);
+        }
+
+        sc.nextLine(); // Consume newline before reading brand
+        String brand = sc.nextLine();
+        double ram = sc.nextDouble();
+
+        double avg = averageofPriceWithBrand(arr, brand);
+        if (avg > 0) {
+            System.out.println("Average Price:"+String.format("%.1f", avg));
+        } else {
+            System.out.println("No Mobile found with mentioned Brand");
+        }
+
+        Mobile[] ans = searchMobilesWithRamAndBrand(arr, ram, brand);
+        if (ans == null || ans.length == 0) {
+            System.out.println("No Mobile found for the mentioned parameters");
+        } else {
+            for (int i = 0; i < ans.length; i++) {
+                System.out.println("IMEI:" + ans[i].imei);
+                System.out.println("Brand:" + ans[i].brand);
+                System.out.println("RAM:" + String.format("%.1f", ans[i].ram));
+                System.out.println("Price:" + String.format("%.1f", ans[i].price));
+            }
+        }
+        sc.close();
+    }
+
+    public static double averageofPriceWithBrand(Mobile[] arr, String brand) {
+        double sum = 0;
+        int count = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].brand.equalsIgnoreCase(brand)) {
+                sum += arr[i].price;
+                count++;
+            }
+        }
+        return count == 0 ? 0 : sum / count;
+    }
+
+    public static Mobile[] searchMobilesWithRamAndBrand(Mobile[] arr, double ram, String brand) {
+        ArrayList<Mobile> res = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (ram < arr[i].ram && !(arr[i].brand.equalsIgnoreCase(brand))) {
+                res.add(arr[i]);
+            }
+        }
+        return res.isEmpty() ? null : res.toArray(new Mobile[0]);
+    }
+}
+
+class Mobile {
+    int imei;
+    String brand;
+    double ram;
+    double price;
+
+    Mobile(int imei, String brand, double ram, double price) {
+        this.imei = imei;
+        this.brand = brand;
+        this.ram = ram;
+        this.price = price;
+    }
+}
